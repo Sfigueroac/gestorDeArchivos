@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,68 +8,89 @@
 </head>
 <body>
     <h1>Gestor de Archivos</h1>
+    
     {% with messages = get_flashed_messages() %}
-    {% if messages %}
-        <ul class="flashes">
-        {% for message in messages %}
-            <li>{{ message }}</li>
-        {% endfor %}
-        </ul>
-    {% endif %}
-{% endwith %}
-    <form action="/upload" method="post" enctype="multipart/form-data">
-        <input type="file" name="file" required>
-        <button type="submit">Subir Archivo</button>
-    </form>
+        {% if messages %}
+            <ul class="flashes">
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
 
-    <h2>Archivos Subidos</h2>
-    <ul>
-        {% for file in files %}
-            <li>{{ file }}</li>
-        {% endfor %}
-    </ul>
-    <h2>Eliminar Archivos</h2>
-    <form action="/delete" method="post">
-        <input type="text" name="filename" placeholder="Nombre del archivo a eliminar" required>
-        <button type="submit">Eliminar Archivo</button>
-    </form>
-    <h2>Buscar Archivos</h2>
-    <form action="/search" method="get">
-        <input type="text" name="query" placeholder="Buscar archivo" required>
-        <button type="submit">Buscar</button>
-    </form>
-    <h2>Resultados de Búsqueda</h2>
-    <ul>
-        {% if search_results %}
+    <div class="form-grid">
+        <!-- Formulario de subida -->
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <h2>Subir Archivo</h2>
+            <input type="file" name="file" required>
+            <button type="submit">Subir Archivo</button>
+        </form>
+
+        <!-- Formulario de eliminación -->
+        <form action="/delete" method="post">
+            <h2>Eliminar Archivo</h2>
+            <input type="text" name="filename" placeholder="Nombre del archivo" required>
+            <button type="submit">Eliminar</button>
+        </form>
+
+        <!-- Formulario de búsqueda -->
+        <form action="/search" method="get">
+            <h2>Buscar Archivo</h2>
+            <input type="text" name="query" placeholder="Buscar archivo" required>
+            <button type="submit">Buscar</button>
+        </form>
+
+        <!-- Formulario de descarga -->
+        <form action="/download" method="get">
+            <h2>Descargar Archivo</h2>
+            <input type="text" name="filename" placeholder="Nombre del archivo" required>
+            <button type="submit">Descargar</button>
+        </form>
+
+        <!-- Formulario de renombrar -->
+        <form action="/rename" method="post">
+            <h2>Renombrar Archivo</h2>
+            <input type="text" name="old_name" placeholder="Nombre actual" required>
+            <input type="text" name="new_name" placeholder="Nuevo nombre" required>
+            <button type="submit">Renombrar</button>
+        </form>
+
+        <!-- Formulario de crear carpeta -->
+        <form action="/create_folder" method="post">
+            <h2>Crear Carpeta</h2>
+            <input type="text" name="folder_name" placeholder="Nombre de carpeta" required>
+            <button type="submit">Crear</button>
+        </form>
+
+        <!-- Formulario de eliminar carpeta -->
+        <form action="/delete_folder" method="post">
+            <h2>Eliminar Carpeta</h2>
+            <input type="text" name="folder_name" placeholder="Nombre de carpeta" required>
+            <button type="submit">Eliminar</button>
+        </form>
+    </div>
+
+    <!-- Sección de archivos -->
+    <div class="file-section">
+        <h2>Archivos Disponibles</h2>
+        <ul>
+            {% for file in files %}
+                <li>{{ file }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Sección de resultados de búsqueda -->
+    {% if search_results %}
+    <div class="file-section">
+        <h2>Resultados de Búsqueda</h2>
+        <ul>
             {% for result in search_results %}
                 <li>{{ result }}</li>
             {% endfor %}
-        {% else %}
-            <li>No se encontraron resultados.</li>
-        {% endif %}
-    
-    </ul>
-    <h2>Descargar Archivos</h2>
-    <form action="/download" method="get">
-        <input type="text" name="filename" placeholder="Nombre del archivo a descargar" required>
-        <button type="submit">Descargar Archivo</button>
-    </form>
-    <h2>Renombrar Archivos</h2>
-    <form action="/rename" method="post">
-        <input type="text" name="old_name" placeholder="Nombre actual del archivo" required>
-        <input type="text" name="new_name" placeholder="Nuevo nombre del archivo" required>
-        <button type="submit">Renombrar Archivo</button>
-    </form>
-    <h2>Crear Carpeta</h2>
-    <form action="/create_folder" method="post">
-        <input type="text" name="folder_name" placeholder="Nombre de la carpeta" required>
-        <button type="submit">Crear Carpeta</button>
-    </form>
-    <h2>Eliminar Carpeta</h2>
-    <form action="/delete_folder" method="post">
-        <input type="text" name="folder_name" placeholder="Nombre de la carpeta a eliminar" required>
-        <button type="submit">Eliminar Carpeta</button>
-    </form>
-
+        </ul>
+    </div>
+    {% endif %}
 </body>
 </html>
