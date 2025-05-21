@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestor de Archivos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Gestor de Archivos</h1>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <ul class="flashes">
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+{% endwith %}
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" required>
+        <button type="submit">Subir Archivo</button>
+    </form>
+
+    <h2>Archivos Subidos</h2>
+    <ul>
+        {% for file in files %}
+            <li>{{ file }}</li>
+        {% endfor %}
+    </ul>
+    <h2>Eliminar Archivos</h2>
+    <form action="/delete" method="post">
+        <input type="text" name="filename" placeholder="Nombre del archivo a eliminar" required>
+        <button type="submit">Eliminar Archivo</button>
+    </form>
+    <h2>Buscar Archivos</h2>
+    <form action="/search" method="get">
+        <input type="text" name="query" placeholder="Buscar archivo" required>
+        <button type="submit">Buscar</button>
+    </form>
+    <h2>Resultados de Búsqueda</h2>
+    <ul>
+        {% if search_results %}
+            {% for result in search_results %}
+                <li>{{ result }}</li>
+            {% endfor %}
+        {% else %}
+            <li>No se encontraron resultados.</li>
+        {% endif %}
+    
+    </ul>
+    <h2>Descargar Archivos</h2>
+    <form action="/download" method="get">
+        <input type="text" name="filename" placeholder="Nombre del archivo a descargar" required>
+        <button type="submit">Descargar Archivo</button>
+    </form>
+    <h2>Renombrar Archivos</h2>
+    <form action="/rename" method="post">
+        <input type="text" name="old_name" placeholder="Nombre actual del archivo" required>
+        <input type="text" name="new_name" placeholder="Nuevo nombre del archivo" required>
+        <button type="submit">Renombrar Archivo</button>
+    </form>
+    <h2>Crear Carpeta</h2>
+    <form action="/create_folder" method="post">
+        <input type="text" name="folder_name" placeholder="Nombre de la carpeta" required>
+        <button type="submit">Crear Carpeta</button>
+    </form>
+    <h2>Eliminar Carpeta</h2>
+    <form action="/delete_folder" method="post">
+        <input type="text" name="folder_name" placeholder="Nombre de la carpeta a eliminar" required>
+        <button type="submit">Eliminar Carpeta</button>
+    </form>
+
+</body>
+</html>
